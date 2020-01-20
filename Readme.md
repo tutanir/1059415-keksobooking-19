@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Tuta](https://up.htmlacademy.ru/javascript/19/user/1059415).
-* Наставник: `Евгений Лепешкин`.
+* Наставник: `Евгений Лепешкин `.
 
 ---
 
