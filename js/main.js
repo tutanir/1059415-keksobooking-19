@@ -176,3 +176,50 @@ pinMain.addEventListener('mousedown', onMainPinMouseDown);
 pinMain.addEventListener('keydown', onMainPinKeyDown);
 
 setAddress(false);
+
+var = TYPE_COST = {
+  'flat': '1000',
+  'bungalo': '0',
+  'hous': '5000',
+  'palase': '10000'
+};
+var = ROOMS_CAPASITY = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0']
+};
+
+var timein = document.querySelector('#timein');
+var timeout = document.querySelector('#timeout');
+var type = document.querySelector('#type');
+var price = document.querySelector('#price');
+
+typeChangeHandler();
+
+var roomNumber = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
+
+roomNumberChangeHandler = function () {
+  if (capasity.options.length > 0) {
+    [].forEach.call(capasity.options, function (item) {
+      item.selected = (ROOMS_CAPASITY[roomNumber.value][0] === item.value) ? true : false;
+      item.hidden = (ROOMS_CAPASITY[roomNumber.value].indexOf(item.value) >= 0) ? false : true;
+    });
+  }
+};
+
+roomNumber.addEventListener() {
+  var minPrice = TYPE_COST[type.value];
+  price.min = minPrice;
+  price.value = minPrice;
+  price.placeholder = minPrice;
+}
+
+function timeinChangeHandler() {
+  timeout.value = timein.value;
+}
+
+function timeoutChangeHandler() {
+  timein.value = timeout.value;
+}
