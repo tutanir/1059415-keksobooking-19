@@ -40,9 +40,6 @@ var CHECKIN = ['12:00', '13:00', '14:00'];
 
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 
-map.classList.remove('map--faded');
-
-
 var addArray = function () {
   for (var i = 0; i < COUNT; i++) {
     adverts.push({
@@ -89,8 +86,6 @@ var renderPins = function () {
   mapPins.appendChild(fragment);
 };
 
-renderPins();
-
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var filterContainer = map.querySelector('.map__filters-container');
 
@@ -132,4 +127,52 @@ var renderCard = function (pin) {
   filterContainer.before(nodeElement);
 };
 
-renderCard(adverts[0]);
+var fields = document.querySelectorAll('fieldset, .map__filter');
+
+var setDisabledState = function () {
+  fields.forEach(function (field) {
+    field.disabled = !field.disabled;
+  });
+};
+
+setDisabledState();
+
+var pinMain = map.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+
+
+var setAddress = function (state) {
+  var Pin = {
+    width: 65,
+    height: 87
+  };
+  var address = adForm.querySelector('#address');
+  address.value = (state) ? (parseInt(pinMain.style.left, 10) + Math.round(Pin.width / 2)) + ', ' + (parseInt(pinMain.style.top, 10) + Pin.height) : (parseInt(pinMain.style.left, 10) + Math.round(Pin.width / 2)) + ', ' + (parseInt(pinMain.style.top, 10) + Math.round(Pin.width / 2));
+};
+
+var setActiveState = function () {
+  map.classList.remove('map--faded');
+  setDisabledState();
+  renderPins();
+  setAddress(true);
+
+  adForm.classList.remove('ad-form--disabled');
+
+  pinMain.removeEventListener('mousedown', onMainPinMouseDown);
+  pinMain.removeEventListener('keydown', onMainPinKeyDown);
+};
+
+var onMainPinKeyDown = function (evt) {
+  if (evt.key === 'Enter') {
+    setActiveState();
+  }
+};
+
+var onMainPinMouseDown = function () {
+  setActiveState();
+};
+
+pinMain.addEventListener('mousedown', onMainPinMouseDown);
+pinMain.addEventListener('keydown', onMainPinKeyDown);
+
+setAddress(false);
