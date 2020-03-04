@@ -177,13 +177,14 @@ pinMain.addEventListener('keydown', onMainPinKeyDown);
 
 setAddress(false);
 
-var = TYPE_COST = {
+var TYPE_COST = {
   'flat': '1000',
   'bungalo': '0',
-  'hous': '5000',
-  'palase': '10000'
+  'house': '5000',
+  'palace': '10000'
 };
-var = ROOMS_CAPASITY = {
+
+var ROOMS_CAPASITY = {
   '1': ['1'],
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
@@ -195,26 +196,28 @@ var timeout = document.querySelector('#timeout');
 var type = document.querySelector('#type');
 var price = document.querySelector('#price');
 
-typeChangeHandler();
-
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
 
-roomNumberChangeHandler = function () {
-  if (capasity.options.length > 0) {
-    [].forEach.call(capasity.options, function (item) {
-      item.selected = (ROOMS_CAPASITY[roomNumber.value][0] === item.value) ? true : false;
-      item.hidden = (ROOMS_CAPASITY[roomNumber.value].indexOf(item.value) >= 0) ? false : true;
+var roomNumberChangeHandler = function () {
+  if (capacity.options.length > 0) {
+    [].forEach.call(capacity.options, function (item) {
+      item.selected = (ROOMS_CAPASITY[roomNumber.value][0] === item.value);
+      item.hidden = !(ROOMS_CAPASITY[roomNumber.value].indexOf(item.value) >= 0);
     });
   }
 };
 
-roomNumber.addEventListener() {
+roomNumberChangeHandler();
+
+var typeChangeHandler = function () {
   var minPrice = TYPE_COST[type.value];
   price.min = minPrice;
-  price.value = minPrice;
   price.placeholder = minPrice;
-}
+};
+
+typeChangeHandler();
+
 
 function timeinChangeHandler() {
   timeout.value = timein.value;
@@ -223,3 +226,10 @@ function timeinChangeHandler() {
 function timeoutChangeHandler() {
   timein.value = timeout.value;
 }
+
+timein.addEventListener('change', timeinChangeHandler);
+timeout.addEventListener('change', timeoutChangeHandler);
+
+type.addEventListener('change', typeChangeHandler);
+
+roomNumber.addEventListener('change', roomNumberChangeHandler);
