@@ -69,15 +69,38 @@ var addArray = function () {
 
 addArray();
 
+var removeActiveClass = function () {
+  var activePin = map.querySelector('.map__pin--active');
+
+  if (activePin) {
+    activePin.classList.remove('map__pin--active');
+  }
+};
+
+var closePopup = function () {
+  var popup = map.querySelector('.popup');
+
+  if (popup) {
+    popup.remove();
+  }
+
+  removeActiveClass();
+};
+
 var renderPin = function (pin) {
   var nodeElement = pinTemplate.cloneNode(true);
   nodeElement.style.left = (pin.location.x - nodeElement.offsetWidth / 2) + 'px';
   nodeElement.style.top = (pin.location.y - nodeElement.offsetHeight) + 'px';
   var img = nodeElement.querySelector('img');
   img.src = pin.author.avatar;
-  nodeElement.addEventListener('click', function() {
+
+  nodeElement.addEventListener('click', function (evt) {
+    closePopup();
     renderCard(pin);
+
+    evt.currentTarget.classList.add('map__pin--active');
   });
+
   return nodeElement;
 };
 
@@ -91,6 +114,14 @@ var renderPins = function () {
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var filterContainer = map.querySelector('.map__filters-container');
+
+var onCardEscKeyDown = function (evt) {
+  if (evt.key === 'Escape') {
+    closePopup();
+
+    document.removeEventListener('keydown', onCardEscKeyDown);
+  }
+};
 
 
 var renderCard = function (pin) {
@@ -126,6 +157,14 @@ var renderCard = function (pin) {
 
     photo.appendChild(img);
   }
+
+  var closeButton = nodeElement.querySelector('.popup__close');
+
+  closeButton.addEventListener('click', function () {
+    closePopup();
+  });
+
+  document.addEventListener('keydown', onCardEscKeyDown);
 
   filterContainer.before(nodeElement);
 };
