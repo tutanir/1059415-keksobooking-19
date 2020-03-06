@@ -75,6 +75,9 @@ var renderPin = function (pin) {
   nodeElement.style.top = (pin.location.y - nodeElement.offsetHeight) + 'px';
   var img = nodeElement.querySelector('img');
   img.src = pin.author.avatar;
+  nodeElement.addEventListener('click', function() {
+    renderCard(pin);
+  });
   return nodeElement;
 };
 
