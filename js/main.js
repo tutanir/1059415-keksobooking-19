@@ -1,60 +1,62 @@
 'use strict';
 
-var COUNT = 8;
-var Price = {
-  MIN: 1000,
-  MAX: 10000
-};
+(function () {
+  var map = document.querySelector('.map');
 
-var adverts = [];
+  // var filterContainer = map.querySelector('.map__filters-container');
 
-var map = document.querySelector('.map');
-var mapPins = map.querySelector('.map__pins');
+  var fields = document.querySelectorAll('fieldset, .map__filter');
 
-var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var setDisabledState = function () {
+    fields.forEach(function (field) {
+      field.disabled = !field.disabled;
+    });
+  };
 
-var intRandom = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+  setDisabledState();
 
-var shuffleArray = function (a) {
-  var j;
-  var x;
-  var i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-  return a;
-};
+  var pinMain = map.querySelector('.map__pin--main');
+  var adForm = document.querySelector('.ad-form');
 
-var TYPE_HOUSING = ['palace', 'flat', 'house', 'bungalo'];
 
-var FACILITIES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var setAddress = function (state) {
+    var Pin = {
+      width: 65,
+      height: 87
+    };
+    var address = adForm.querySelector('#address');
+    address.value = (state) ? (parseInt(pinMain.style.left, 10) + Math.round(Pin.width / 2)) + ', ' + (parseInt(pinMain.style.top, 10) + Pin.height) : (parseInt(pinMain.style.left, 10) + Math.round(Pin.width / 2)) + ', ' + (parseInt(pinMain.style.top, 10) + Math.round(Pin.width / 2));
+  };
 
-var FOTO_ROOMS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var setActiveState = function () {
+    map.classList.remove('map--faded');
+    setDisabledState();
+    window.renderPins();
+    setAddress(true);
 
-var CHECKIN = ['12:00', '13:00', '14:00'];
+    adForm.classList.remove('ad-form--disabled');
 
-var CHECKOUT = ['12:00', '13:00', '14:00'];
+    pinMain.removeEventListener('mousedown', onMainPinMouseDown);
+    pinMain.removeEventListener('keydown', onMainPinKeyDown);
+  };
 
-var addArray = function () {
-  for (var i = 0; i < COUNT; i++) {
-    adverts.push({
-      'author': {
-        avatar: './img/avatars/user0' + (i + 1) + '.png'
-      },
-      'offer': {
-        'title': 'Заголовок ' + i,
-        'address': '600, 350',
-        'price': intRandom(Price.MIN, Price.MAX),
-        'type': TYPE_HOUSING[intRandom(0, (TYPE_HOUSING.length - 1))],
-        'rooms': intRandom(1, 10),
-        'guests': intRandom(1, 10),
-        'checkin': CHECKIN[intRandom(0, (CHECKIN.length - 1))],
-        'checkout': CHECKOUT[intRandom(0, (CHECKOUT.length - 1))],
+  var onMainPinKeyDown = function (evt) {
+    if (evt.key === 'Enter') {
+      setActiveState();
+    }
+  };
+
+  var onMainPinMouseDown = function () {
+    setActiveState();
+  };
+
+  pinMain.addEventListener('mousedown', onMainPinMouseDown);
+  pinMain.addEventListener('keydown', onMainPinKeyDown);
+
+  setAddress(false);
+
+})();
+- 1))],
         'features': shuffleArray(FACILITIES).slice(0, intRandom(1, FACILITIES.length)),
         'description': 'описание',
         'photos': shuffleArray(FOTO_ROOMS).slice(0, intRandom(0, (FOTO_ROOMS.length - 1)))
