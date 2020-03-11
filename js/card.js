@@ -1,7 +1,36 @@
 'use strict';
 
 (function () {
+
+  var map = window.default.map;
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+  var removeActiveClass = function () {
+    var activePin = map.querySelector('.map__pin--active');
+
+    if (activePin) {
+      activePin.classList.remove('map__pin--active');
+    }
+  };
+
+  var closePopup = function () {
+    var popup = map.querySelector('.popup');
+
+    if (popup) {
+      popup.remove();
+    }
+
+    removeActiveClass();
+  };
+
+  var onCardEscKeyDown = function (evt) {
+    if (evt.key === 'Escape') {
+      closePopup();
+
+      document.removeEventListener('keydown', onCardEscKeyDown);
+    }
+  };
+
   var renderCard = function (pin) {
     var nodeElement = cardTemplate.cloneNode(true);
 
@@ -36,37 +65,11 @@
       photo.appendChild(img);
     }
 
-    var removeActiveClass = function () {
-      var activePin = window.default.map.querySelector('.map__pin--active');
-
-      if (activePin) {
-        activePin.classList.remove('map__pin--active');
-      }
-    };
-
-    var closePopup = function () {
-      var popup = window.default.map.querySelector('.popup');
-
-      if (popup) {
-        popup.remove();
-      }
-
-      removeActiveClass();
-    };
-
     var closeButton = nodeElement.querySelector('.popup__close');
 
     closeButton.addEventListener('click', function () {
       closePopup();
     });
-
-    var onCardEscKeyDown = function (evt) {
-      if (evt.key === 'Escape') {
-        closePopup();
-
-        document.removeEventListener('keydown', onCardEscKeyDown);
-      }
-    };
 
     document.addEventListener('keydown', onCardEscKeyDown);
 
@@ -74,4 +77,11 @@
 
     filterContainer.before(nodeElement);
   };
+
+
+  window.card = {
+    render: renderCard,
+    close: closePopup
+  };
+
 })();
