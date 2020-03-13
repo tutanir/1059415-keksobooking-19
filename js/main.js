@@ -56,7 +56,7 @@
   setAddress(false);
 
 })();
-- 1))],
+
         'features': shuffleArray(FACILITIES).slice(0, intRandom(1, FACILITIES.length)),
         'description': 'описание',
         'photos': shuffleArray(FOTO_ROOMS).slice(0, intRandom(0, (FOTO_ROOMS.length - 1)))
