@@ -5,6 +5,7 @@
   var map = window.default.map;
   var mapPins = map.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var storagePins = [];
 
   var renderPin = function (pin) {
     var nodeElement = pinTemplate.cloneNode(true);
