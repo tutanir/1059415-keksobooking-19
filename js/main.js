@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var GET_URL = 'https://js.dump.academy/keksobooking/data';
+  var MAX_COUNT = 5;
+  var pins = [];
+
   var map = document.querySelector('.map');
 
   var fields = document.querySelectorAll('fieldset, .map__filter');
@@ -29,7 +33,7 @@
   var setActiveState = function () {
     map.classList.remove('map--faded');
     setDisabledState();
-    window.renderPins();
+    window.load(GET_URL, onSuccess, onError);
     setAddress(true);
 
     adForm.classList.remove('ad-form--disabled');
@@ -52,6 +56,14 @@
   pinMain.addEventListener('keydown', onMainPinKeyDown);
 
   setAddress(false);
+
+  var onSuccess = function (data) {
+    pins = data.slice(0, MAX_COUNT);
+
+    window.renderPins(pins);
+  };
+
+  var onError = function () {};
 
   window.map = {
     pinMain: pinMain,
