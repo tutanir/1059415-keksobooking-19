@@ -23,10 +23,10 @@
     return nodeElement;
   };
 
-  var renderPins = function () {
+  var renderPins = function (data) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.data.adverts.length; i++) {
-      fragment.appendChild(renderPin(window.data.adverts[i]));
+    for (var i = 0; i < data.length; i++) {
+      fragment.appendChild(renderPin(data[i]));
     }
     mapPins.appendChild(fragment);
   };
