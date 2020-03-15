@@ -7,7 +7,7 @@
     ok: 200
   };
 
-  window.load = function (url, onSuccess, onError) {
+  var request = function (url, onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -25,6 +25,16 @@
     });
     xhr.timeout = TIMEOUT; // 10s
     xhr.open('GET', url);
-    xhr.send();
+
+    if (data) {
+      xhr.send(data);
+    } else {
+      xhr.send();
+    }
+  };
+
+  window.backend = {
+    load: request,
+    save: request
   };
 })();
