@@ -31,6 +31,19 @@
     mapPins.appendChild(fragment);
   };
 
-  window.renderPins = renderPins;
+  var removePins = function () {
+    var pins = map.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    if (pins) {
+      pins.forEach(function (item) {
+        item.remove();
+      });
+    }
+  };
+
+  window.pin = {
+    render: renderPins,
+    remove: removePins
+  };
 
 })();

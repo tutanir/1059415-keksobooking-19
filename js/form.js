@@ -2,6 +2,8 @@
 
 (function () {
 
+  var SEND_URL = 'https://js.dump.academy/keksobooking';
+
   var TYPE_COST = {
     'flat': '1000',
     'bungalo': '0',
@@ -16,13 +18,14 @@
     '100': ['0']
   };
 
-  var timein = document.querySelector('#timein');
-  var timeout = document.querySelector('#timeout');
-  var type = document.querySelector('#type');
-  var price = document.querySelector('#price');
+  var adForm = window.default.adForm;
+  var timein = adForm.querySelector('#timein');
+  var timeout = adForm.querySelector('#timeout');
+  var type = adForm.querySelector('#type');
+  var price = adForm.querySelector('#price');
 
-  var roomNumber = document.querySelector('#room_number');
-  var capacity = document.querySelector('#capacity');
+  var roomNumber = adForm.querySelector('#room_number');
+  var capacity = adForm.querySelector('#capacity');
 
   var roomNumberChangeHandler = function () {
     if (capacity.options.length > 0) {
@@ -58,5 +61,53 @@
   type.addEventListener('change', typeChangeHandler);
 
   roomNumber.addEventListener('change', roomNumberChangeHandler);
+
+
+  var submitButton = adForm.querySelector('.ad-form__submit');
+
+  var onSuccessElementClick = function () {
+    roomNumberChangeHandler();
+    window.map.setDeactiveState();
+    var success = document.querySelector('.success');
+    if (success) {
+      success.remove();
+    }
+  };
+
+  var onSuccess = function () {
+    var successElement = document.querySelector('#success').content.querySelector('.success');
+    var template = successElement.cloneNode(true);
+
+    template.addEventListener('click', onSuccessElementClick);
+
+    document.body.appendChild(template);
+  };
+
+  var onErrorElementClick = function () {
+    roomNumberChangeHandler();
+    window.map.setDeactiveState();
+    var error = document.querySelector('.error');
+    if (error) {
+      error.remove();
+    }
+  };
+
+  var onError = function () {
+    var errorElement = document.querySelector('#error').content.querySelector('.error');
+    var template = errorElement.cloneNode(true);
+
+    template.addEventListener('click', onErrorElementClick);
+
+    document.body.appendChild(template);
+  };
+
+  var onSubmitButtonClick = function (evt) {
+    evt.preventDefault();
+
+    window.backend.save(SEND_URL, onSuccess, onError, new FormData(adForm), 'POST');
+  };
+
+  submitButton.addEventListener('click', onSubmitButtonClick);
+
 
 })();

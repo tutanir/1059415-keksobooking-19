@@ -1,9 +1,8 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-
   window.default = {
-    map: map
+    map: document.querySelector('.map'),
+    adForm: document.querySelector('.ad-form')
   };
 })();
