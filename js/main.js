@@ -18,14 +18,16 @@
   setDisabledState();
 
   var pinMain = map.querySelector('.map__pin--main');
-  var adForm = document.querySelector('.ad-form');
+  var adForm = window.default.adForm;
+  var Pin = {
+    width: 65,
+    height: 87,
+    x: pinMain.style.left,
+    y: pinMain.style.top
+  };
 
 
   var setAddress = function (state) {
-    var Pin = {
-      width: 65,
-      height: 87
-    };
     var address = adForm.querySelector('#address');
     address.value = (state) ? (parseInt(pinMain.style.left, 10) + Math.round(Pin.width / 2)) + ', ' + (parseInt(pinMain.style.top, 10) + Pin.height) : (parseInt(pinMain.style.left, 10) + Math.round(Pin.width / 2)) + ', ' + (parseInt(pinMain.style.top, 10) + Math.round(Pin.width / 2));
   };
@@ -33,13 +35,31 @@
   var setActiveState = function () {
     map.classList.remove('map--faded');
     setDisabledState();
-    window.load(GET_URL, onSuccess, onError);
+    window.backend.load(GET_URL, onSuccess, onError);
     setAddress(true);
 
     adForm.classList.remove('ad-form--disabled');
 
     pinMain.removeEventListener('mousedown', onMainPinMouseDown);
     pinMain.removeEventListener('keydown', onMainPinKeyDown);
+  };
+
+  var setDeactiveState = function () {
+    map.classList.add('map--faded');
+    setDisabledState();
+    adForm.reset();
+
+    pinMain.style.left = Pin.x;
+    pinMain.style.top = Pin.y;
+
+    setAddress(false);
+    adForm.classList.add('ad-form--disabled');
+
+    window.pin.remove();
+    window.card.close();
+
+    pinMain.addEventListener('mousedown', onMainPinMouseDown);
+    pinMain.addEventListener('keydown', onMainPinKeyDown);
   };
 
   var onMainPinKeyDown = function (evt) {
@@ -60,14 +80,15 @@
   var onSuccess = function (data) {
     pins = data.slice(0, MAX_COUNT);
 
-    window.renderPins(pins);
+    window.pin.render(pins);
   };
 
   var onError = function () {};
 
   window.map = {
     pinMain: pinMain,
-    setAddress: setAddress
+    setAddress: setAddress,
+    setDeactiveState: setDeactiveState
   };
 
 })();
