@@ -78,12 +78,22 @@
   setAddress(false);
 
   var onSuccess = function (data) {
-    pins = data.slice(0, MAX_COUNT);
+    pins = data.slice();
 
-    window.pin.render(pins);
+    window.pin.render(pins.slice(0, MAX_COUNT));
   };
 
   var onError = function () {};
+
+  var onMapFiltersChange = function () {
+    window.pin.remove();
+    window.card.close();
+    window.pin.render(window.filters(pins));
+  };
+
+  var mapFilters = document.querySelector('.map__filters');
+
+  mapFilters.addEventListener('change', onMapFiltersChange);
 
   window.map = {
     pinMain: pinMain,

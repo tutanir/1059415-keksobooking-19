@@ -16,7 +16,7 @@
     }
   };
 
-  filterElements = Array.from(document.querySelector('map__filters').children);
+  var filterElements = Array.from(document.querySelector('.map__filters').children);
 
   var filterRules = {
     'housing-type': function (data, filter) {
@@ -35,12 +35,12 @@
       return filter.value === data.offer.guests.toString();
     },
 
-    'housing-features': function (data, filter) {
+    'housing-features': function (data) {
       var checkListElements = Array.from(document.querySelectorAll('input[type=checkbox]:checked'));
 
-      return.checkListElements.every(function (it) {
+      return checkListElements.every(function (it) {
         return data.offer.features.some(function (features) {
-          return feature === it.value;
+          return features === it.value;
         });
       });
     }
@@ -54,5 +54,5 @@
     });
   };
 
-  window.filter =filterData;
+  window.filters = filterData;
 })();
